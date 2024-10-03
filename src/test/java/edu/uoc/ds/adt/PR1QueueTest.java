@@ -33,15 +33,15 @@ public class PR1QueueTest {
     @org.junit.Test
     public void queueTest() {
         assertEquals(this.pr1q.CAPACITY-1, this.pr1q.getQueue().size());
-        Assert.assertEquals(new Character('0'), pr1q.poll());
-        Assert.assertEquals(new Character('1'), pr1q.poll());
-        Assert.assertEquals(new Character('2'), pr1q.poll());
-        Assert.assertEquals(new Character('3'), pr1q.poll());
-        Assert.assertEquals(new Character('4'), pr1q.poll());
-        Assert.assertEquals(new Character('5'), pr1q.poll());
-        Assert.assertEquals(new Character('6'), pr1q.poll());
-        Assert.assertEquals(new Character('7'), pr1q.poll());
-        Assert.assertEquals(new Character('8'), pr1q.poll());
+        Assert.assertEquals(Character.valueOf('0'), pr1q.poll());
+        Assert.assertEquals(Character.valueOf('1'), pr1q.poll());
+        Assert.assertEquals(Character.valueOf('2'), pr1q.poll());
+        Assert.assertEquals(Character.valueOf('3'), pr1q.poll());
+        Assert.assertEquals(Character.valueOf('4'), pr1q.poll());
+        Assert.assertEquals(Character.valueOf('5'), pr1q.poll());
+        Assert.assertEquals(Character.valueOf('6'), pr1q.poll());
+        Assert.assertEquals(Character.valueOf('7'), pr1q.poll());
+        Assert.assertEquals(Character.valueOf('8'), pr1q.poll());
         assertEquals(0, this.pr1q.getQueue().size());
     }
 
