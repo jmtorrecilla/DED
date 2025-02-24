@@ -1,11 +1,15 @@
 package edu.uoc.ds.adt;
 
+import edu.uoc.ds.adt.sequential.Queue;
+import edu.uoc.ds.traversal.Iterator;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import java.util.ArrayDeque;
+
+import static org.junit.Assert.*;
 
 public class PR1StackTest {
 
@@ -48,4 +52,5 @@ public class PR1StackTest {
         Assert.assertEquals(Character.valueOf('0'), pr1q.pop());
         assertEquals(0, this.pr1q.getStack().size());
     }
+
 }
