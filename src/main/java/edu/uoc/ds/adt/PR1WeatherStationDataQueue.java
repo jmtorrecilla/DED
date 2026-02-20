@@ -5,6 +5,8 @@ import edu.uoc.ds.adt.model.WeatherStationDataSummaryItem;
 import edu.uoc.ds.adt.sequential.Queue;
 import edu.uoc.ds.adt.sequential.QueueArrayImpl;
 
+import edu.uoc.ds.traversal.Iterator;
+
 public class PR1WeatherStationDataQueue {
 
     private final int capacity;
@@ -46,21 +48,24 @@ public class PR1WeatherStationDataQueue {
     }
 
     public Queue<WeatherStationData> getQueue() {
-        return queue;
+        return this.queue;
     }
 
     public void add(WeatherStationData data) {
+        if (data == null) return;
+
         queue.add(data);
 
-        // global
+        // Global acumulado
         totalPrecipitation += data.getPrecipitation();
         totalAvgTemp += data.getAvgAirTemperature();
         totalCount++;
 
-        // por año
+        // Por año
         int year = data.getLastUpdated().getYear();
         int idx = indexOfYear(year);
-        if (idx >= 0) {
+
+        if (idx != -1) {
             sumPrecipitationByYear[idx] += data.getPrecipitation();
             sumAvgTempByYear[idx] += data.getAvgAirTemperature();
             countByYear[idx]++;
@@ -68,24 +73,56 @@ public class PR1WeatherStationDataQueue {
     }
 
     public double getMeanPrecipitation() {
-        return totalCount == 0 ? 0.0 : totalPrecipitation / totalCount;
+        if (totalCount == 0) return 0.0;
+        return totalPrecipitation / (double) totalCount;
     }
 
     public double getMeanAvgAirTemperature() {
-        return totalCount == 0 ? 0.0 : totalAvgTemp / totalCount;
+        if (totalCount == 0) return 0.0;
+        return totalAvgTemp / (double) totalCount;
     }
 
-    public WeatherStationDataSummaryItem getWeatherStationDataSumaryItem(int year) {
+    public WeatherStationDataSummaryItem getWeatherStationDataSummaryByYear(int year) {
         int idx = indexOfYear(year);
-        if (idx < 0 || countByYear[idx] == 0) {
-            return new WeatherStationDataSummaryItem(0.0, 0.0, 0);
-        }
+        if (idx == -1 || countByYear[idx] == 0) return null;
 
-        double accumulated = sumPrecipitationByYear[idx];
-        double meanTemp = sumAvgTempByYear[idx] / countByYear[idx];
+        double accumulatedPrecipitation = sumPrecipitationByYear[idx];
+        double meanAvgAirTemperature = sumAvgTempByYear[idx] / (double) countByYear[idx];
         int rows = countByYear[idx];
 
-        return new WeatherStationDataSummaryItem(accumulated, meanTemp, rows);
+        // Cambiado
+        return new WeatherStationDataSummaryItem(accumulatedPrecipitation, meanAvgAirTemperature, rows);
+    }
+
+    /**
+     * Si el test te obliga a calcular recorriendo la cola con iterador (como sugiere el enunciado),
+     * aquí tienes un ejemplo auxiliar opcional.
+     */
+    public double computeMeanPrecipitationByIteratingQueue() {
+        if (queue == null || queue.size() == 0) return 0.0;
+
+        double sum = 0.0;
+        int count = 0;
+
+        Iterator<WeatherStationData> it = queue.values();
+        while (it.hasNext()) {
+            WeatherStationData d = it.next();
+            sum += d.getPrecipitation();
+            count++;
+        }
+        return count == 0 ? 0.0 : sum / (double) count;
+    }
+
+    // Método para el test
+    public WeatherStationDataSummaryItem getWeatherStationDataSumaryItem(int year) {
+        int idx = indexOfYear(year);
+        if (idx == -1 || countByYear[idx] == 0) return null;
+
+        double accumulatedPrecipitation = sumPrecipitationByYear[idx];
+        double meanAvgAirTemperature = sumAvgTempByYear[idx] / (double) countByYear[idx];
+        int rows = countByYear[idx];
+
+        return new WeatherStationDataSummaryItem(accumulatedPrecipitation, meanAvgAirTemperature, rows);
     }
 
     private int indexOfYear(int year) {
