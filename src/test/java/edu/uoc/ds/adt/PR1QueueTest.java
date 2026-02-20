@@ -1,6 +1,7 @@
 package edu.uoc.ds.adt;
 
 import edu.uoc.ds.adt.sequential.Queue;
+import edu.uoc.ds.adt.util.Point;
 import edu.uoc.ds.traversal.Iterator;
 import org.junit.After;
 import org.junit.Assert;
@@ -13,18 +14,24 @@ import static org.junit.Assert.assertTrue;
 public class PR1QueueTest {
     PR1Queue pr1q;
 
-    private void fillQueue() {
-        for (char c = '0'; c < '9'; c++) {
-            pr1q.add(Character.valueOf(c));
+    private void fillQueue(Point[] points) {
 
+        for (Point point: points) {
+            pr1q.add(point);
         }
     }
     @Before
     public void setUp() {
-        this.pr1q = new PR1Queue();
+        double a = 0;
+        double b = 5;
+        double thetaMax = 10 * Math.PI;
+        double step = 0.05;
+
+        Point[] points = SpiralGenerator.generate(a, b, thetaMax, step);
+        this.pr1q = new PR1Queue(points.length);
 
         assertNotNull(this.pr1q.getQueue());
-        fillQueue();
+        fillQueue(points);
     }
 
     @After
@@ -35,50 +42,69 @@ public class PR1QueueTest {
 
     @org.junit.Test
     public void queueTest() {
-        assertEquals(this.pr1q.CAPACITY-1, this.pr1q.getQueue().size());
-        Assert.assertEquals(Character.valueOf('0'), pr1q.poll());
-        Assert.assertEquals(Character.valueOf('1'), pr1q.poll());
-        Assert.assertEquals(Character.valueOf('2'), pr1q.poll());
-        Assert.assertEquals(Character.valueOf('3'), pr1q.poll());
-        Assert.assertEquals(Character.valueOf('4'), pr1q.poll());
-        Assert.assertEquals(Character.valueOf('5'), pr1q.poll());
-        Assert.assertEquals(Character.valueOf('6'), pr1q.poll());
-        Assert.assertEquals(Character.valueOf('7'), pr1q.poll());
-        Assert.assertEquals(Character.valueOf('8'), pr1q.poll());
-        assertEquals(0, this.pr1q.getQueue().size());
+        assertEquals(629, this.pr1q.getQueue().size());
+
+        Point point = pr1q.poll();
+
+        assertEquals(0, point.x(),0);
+        assertEquals(0, point.y(),0);
+
+        point = pr1q.poll();
+        assertEquals(0.24, point.x(),0.05);
+        assertEquals(0.012, point.y(),0.05);
+
+        point = pr1q.poll();
+        assertEquals(0.5, point.x(),0.05);
+        assertEquals(0.05, point.y(),0.05);
+
+        point = pr1q.poll();
+        assertEquals(0.75, point.x(),0.05);
+        assertEquals(0.11, point.y(),0.05);
+
+        point = pr1q.poll();
+        assertEquals(0.98, point.x(),0.05);
+        assertEquals(0.20, point.y(),0.05);
+
+        point = pr1q.poll();
+        assertEquals(1.21, point.x(),0.05);
+        assertEquals(0.30, point.y(),0.05);
+
+
+        assertEquals(623, this.pr1q.getQueue().size());
     }
 
     @Test
     public void queueTest2() {
 
-        Queue<Character> queue = pr1q.getQueue();
-        Iterator<Character> it = queue.values();
+        Queue<Point> queue = pr1q.getQueue();
+        Iterator<Point> it = queue.values();
         assertTrue(it.hasNext());
-        assertEquals(Character.valueOf('0'), it.next());
+        Point point = it.next();
 
-        assertTrue(it.hasNext());
-        assertEquals(Character.valueOf('1'), it.next());
+        assertEquals(0, point.x(),0);
+        assertEquals(0, point.y(),0);
 
-        assertTrue(it.hasNext());
-        assertEquals(Character.valueOf('2'), it.next());
+        point = it.next();
+        assertEquals(0.24, point.x(),0.05);
+        assertEquals(0.012, point.y(),0.05);
 
-        assertTrue(it.hasNext());
-        assertEquals(Character.valueOf('3'), it.next());
+        point = it.next();
+        assertEquals(0.5, point.x(),0.05);
+        assertEquals(0.05, point.y(),0.05);
 
-        assertTrue(it.hasNext());
-        assertEquals(Character.valueOf('4'), it.next());
+        point = it.next();
+        assertEquals(0.75, point.x(),0.05);
+        assertEquals(0.11, point.y(),0.05);
 
-        assertTrue(it.hasNext());
-        assertEquals(Character.valueOf('5'), it.next());
+        point = it.next();
+        assertEquals(0.98, point.x(),0.05);
+        assertEquals(0.20, point.y(),0.05);
 
-        assertTrue(it.hasNext());
-        assertEquals(Character.valueOf('6'), it.next());
+        point = it.next();
+        assertEquals(1.21, point.x(),0.05);
+        assertEquals(0.30, point.y(),0.05);
 
-        assertTrue(it.hasNext());
-        assertEquals(Character.valueOf('7'), it.next());
-
-        assertTrue(it.hasNext());
-        assertEquals(Character.valueOf('8'), it.next());
+        Assert.assertTrue(it.hasNext());
 
     }
 

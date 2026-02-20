@@ -1,31 +1,38 @@
 package edu.uoc.ds.adt;
 
-
 import edu.uoc.ds.adt.sequential.Queue;
 import edu.uoc.ds.adt.sequential.QueueArrayImpl;
+import edu.uoc.ds.adt.util.Point;
 
 public class PR1Queue {
 
-    public final int CAPACITY = 10;
+    public static final int DEFAULT_CAPACITY = 10;
 
-    private Queue<Character> queue;
+    private final int capacity;
+    private Queue<Point> queue;
 
     public PR1Queue() {
+        this(DEFAULT_CAPACITY);
+    }
+
+    public PR1Queue(int capacity) {
+        this.capacity = capacity;
         newQueue();
     }
+
     public void newQueue() {
-        queue = new QueueArrayImpl<>(CAPACITY);
+        queue = new QueueArrayImpl<>(capacity);
     }
 
-    public Queue<Character> getQueue() {
-        return this.queue;
+    public Queue<Point> getQueue() {
+        return queue;
     }
 
-    public void add(Character c) {
-        this.queue.add(c);
+    public void add(Point p) {
+        queue.add(p);
     }
 
-    public Character poll() {
-        return this.queue.poll();
+    public Point poll() {
+        return queue.poll();
     }
 }
